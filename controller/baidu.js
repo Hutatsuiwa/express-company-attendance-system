@@ -8,7 +8,7 @@ exports.registerFace = async (req, res, next) => {
     try {
         let result = await client.addUser(image, imageType, groupId, userId)
         if(result.error_code){
-            throw result;
+            throw result
         }
         console.log(result);
         res.status(201).json(result)
