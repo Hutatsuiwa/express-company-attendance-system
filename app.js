@@ -4,10 +4,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+// const multer = require('multer');
 const errorHandler = require('./middleware/errorHandler')
 
-const usersRouter = require('./routes/users');
-const baiduRouter = require('./routes/baidu')
+const adminsRouter = require('./routes/admins');
+const examinationsRouter = require('./routes/examinations');
+const questionsRouter = require('./routes/questions');
+const roomsRouter = require('./routes/rooms');
+const scoresRouter = require('./routes/scores');
+const studentsRouter = require('./routes/students');
 
 const app = express();
 
@@ -20,9 +25,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 //使用路由
-app.use('/api/users', usersRouter);
-app.use('/api/baidu', baiduRouter);
-
+app.use('/api/admins', adminsRouter);
+app.use('/api/examinations', examinationsRouter);
+app.use('/api/students', studentsRouter);
+app.use('/api/questions', questionsRouter);
+app.use('/api/rooms', roomsRouter);
+app.use('/api/scores', scoresRouter);
+app.post('/api/test',(req,res,next)=>{
+  console.log(req.body);
+  // console.log(req.fields);
+  res.json({123:123})
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

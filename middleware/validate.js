@@ -12,6 +12,7 @@ module.exports = validations => {
     }
 
     let err = {}
+    err.status = 400;
     err.errors = errors.array();
     next(err);
   };

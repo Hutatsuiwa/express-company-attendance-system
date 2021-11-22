@@ -15,6 +15,7 @@ module.exports = async (req,res,next)=>{
 
         let decodeToken = await jwt.verify(token, jwtSecret);
         console.log(decodeToken)
+        req.userName = decodeToken.username
         next()
     }catch(err){
         err.status = 401;
