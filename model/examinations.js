@@ -5,8 +5,8 @@ const getConnection = promisify(pool.getConnection).bind(pool)
 exports.getAllExaminations = async ()=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
@@ -26,8 +26,8 @@ exports.getAllExaminations = async ()=>{
 exports.getExaminationByUsername = async (username)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
@@ -47,8 +47,8 @@ exports.getExaminationByUsername = async (username)=>{
 exports.getExaminationDoing = async (username)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         let examinationDetail={
             examinationId:"temp",
@@ -68,8 +68,8 @@ exports.getExaminationDoing = async (username)=>{
 exports.getExaminationByCourseName = async (courseName)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
@@ -89,8 +89,8 @@ exports.getExaminationByCourseName = async (courseName)=>{
 exports.getExaminationByCourseTime = async (courseName,startTime,endTime)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
@@ -110,8 +110,8 @@ exports.getExaminationByCourseTime = async (courseName,startTime,endTime)=>{
 exports.addExamination = async (examination)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -123,8 +123,8 @@ exports.addExamination = async (examination)=>{
 exports.deleteExamination = async (examinationId)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -136,8 +136,8 @@ exports.deleteExamination = async (examinationId)=>{
 exports.updateExamination = async (examination)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -149,8 +149,21 @@ exports.updateExamination = async (examination)=>{
 exports.reservationExamination = async (reservation)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
+        let result = await query(sql)
+        connection.release()
+        return
+    }catch(err){
+        throw err
+    }
+}
+
+exports.startExamination = async (examinationId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -162,8 +175,8 @@ exports.reservationExamination = async (reservation)=>{
 exports.closeExamination = async (examinationId)=>{
     try{
         let connection = await getConnection();
-        let query = promisfy(connection.query).bind(connection)
-        let sql = ""
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -171,4 +184,17 @@ exports.closeExamination = async (examinationId)=>{
         throw err
     }
 }
-    
+
+//获取定时器Id
+exports.findTimeoutId = async (examinationId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select * from students"
+        let result = await query(sql)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}

@@ -9,13 +9,13 @@ module.exports = async (req,res,next)=>{
         : null
 
         if(!token){
-            let err = {};
+            let err = {}
             throw err;
         }   
 
         let decodeToken = await jwt.verify(token, jwtSecret);
         console.log(decodeToken)
-        req.userName = decodeToken.username
+        req.username = decodeToken.username
         next()
     }catch(err){
         err.status = 401;

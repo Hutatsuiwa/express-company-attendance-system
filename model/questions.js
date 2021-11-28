@@ -6,7 +6,7 @@ exports.getChoiceQuestion = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let choices = [{
             id:"temp",
@@ -30,7 +30,7 @@ exports.getJudgeQuestion = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let judges = [{
             id:"temp",
@@ -54,7 +54,7 @@ exports.getMultipleQuestion = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let multiples = [{
             id:"temp",
@@ -78,7 +78,7 @@ exports.addChoiceQuestion = async (choice)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -91,7 +91,7 @@ exports.addJudgeQuestion = async (judge)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -104,7 +104,7 @@ exports.addMultipleQuestion = async (multiple)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -117,7 +117,7 @@ exports.updateChoiceQuestion = async (choice)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -130,7 +130,7 @@ exports.updateJudgeQuestion = async (judge)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -143,7 +143,7 @@ exports.updateMultipleQuestion = async (multiple)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -156,7 +156,7 @@ exports.deleteChoiceQuestion = async (questionId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -169,7 +169,7 @@ exports.deleteJudgeQuestion = async (questionId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -182,7 +182,7 @@ exports.deleteMultipleQuestion = async (questionId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -195,7 +195,7 @@ exports.getPaperByUserCourse = async (username,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let questions = {
             choices:[{
@@ -229,17 +229,17 @@ exports.getPaperByUserCourse = async (username,courseId)=>{
             }]
         }
         connection.release()
-        return
+        return questions
     }catch(err){
         throw err
     }
 }
 
-exports.getPaper = async ()=>{
+exports.getPaper = async (examinationId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let questions = {
             choices:[{
@@ -264,7 +264,7 @@ exports.getPaper = async ()=>{
             }]
         }
         connection.release()
-        return
+        return questions
     }catch(err){
         throw err
     }
@@ -274,7 +274,7 @@ exports.submitAnswer = async (submit)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return

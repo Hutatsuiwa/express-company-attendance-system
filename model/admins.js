@@ -8,7 +8,7 @@ exports.getAllAdmins = async()=>{
         let connection = await getConnection()
         // 将connection.query方法转换成promise格式
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from users"
+        let sql = "select * from students"
         let result = await query(sql);
         let admins = [{
             userId:"temp",
@@ -27,7 +27,7 @@ exports.getAdminByName = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let admin = {
             userId:"temp",
@@ -46,7 +46,7 @@ exports.addAdmin = async (admin)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -59,7 +59,7 @@ exports.updateAdmin = async (admin)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -72,7 +72,7 @@ exports.deleteAdmin = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -85,7 +85,7 @@ exports.adminMyself = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let admin = {
             userId:"temp",
@@ -95,6 +95,33 @@ exports.adminMyself = async (username)=>{
         }
         connection.release()
         return admin
+    }catch(err){
+        throw err
+    }
+}
+
+//数据验证所需
+exports.findAdmin = async(username)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select username from admins where username=?"
+        let result = await query(sql,username)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.validPassword = async(username)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select password from admins where username=?"
+        let result = await query(sql,username)
+        connection.release()
+        return result.length ? result[0].password : null
     }catch(err){
         throw err
     }

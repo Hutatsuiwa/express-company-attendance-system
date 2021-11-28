@@ -164,10 +164,10 @@ exports.getPaperByUserCourse = async (req,res,next)=>{
     }
 }
 
-// 生成试卷
+// 获取试卷
 exports.getPaper = async (req,res,next)=>{
     try{
-        let result = await questionModel.getPaper()
+        let result = await questionModel.getPaper(req.params.examinationId)
         res.status(200).json({
             questions:result
         })

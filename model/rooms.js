@@ -6,7 +6,7 @@ exports.getAllRoom = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let rooms = [{
             roomId:"temp",
@@ -26,7 +26,7 @@ exports.getRoomByRoomName = async (roomName)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let rooms = [{
             roomId:"temp",
@@ -46,7 +46,7 @@ exports.getRoomStateByRoomName = async (roomName)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let roomState = {
             reservationNum:"temp",
@@ -64,7 +64,7 @@ exports.addRoom = async (room)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -77,7 +77,7 @@ exports.deleteRoom = async (roomName)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -90,7 +90,7 @@ exports.updateRoom = async (room)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return

@@ -6,7 +6,7 @@ exports.getScoreByCourse = async (courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let scores = [{
             userId:"temp",
@@ -28,7 +28,7 @@ exports.getScoreByNameCourse = async (username,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let score = {
             userId:"temp",
@@ -50,7 +50,7 @@ exports.getScoreByCourseLarge = async (courseId,largerThen)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let scores = [{
             userId:"temp",
@@ -72,7 +72,7 @@ exports.updateScore = async (score)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -85,7 +85,7 @@ exports.deleteScore = async (username,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return

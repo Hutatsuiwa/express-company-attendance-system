@@ -54,4 +54,115 @@ const qualityControl = (result)=>{
     return true;
 }
 
-module.exports={client,qualityControl}
+//注册人脸
+exports.registerFace = async (studentImage,studentUserId) => {
+    let image = studentImage;
+    let imageType = "BASE64";
+    let groupId = "students";
+    let userId = studentUserId;
+    try {
+        let result = await client.addUser(image, imageType, groupId, userId)
+        if(result.error_code){
+            throw result;
+        }
+        // console.log(result);
+        // res.status(201).json({
+        //     result:true,
+        //     message:"注册成功"
+        // });
+        return;
+    } catch (err) {
+        err.status = 400;
+        err.baiduErrCode = err.error_code;
+        err.message = err.error_msg;
+        throw err;
+    }
+}
+
+
+//匹配人脸
+exports.matchFace = async (studentImage,studentUserId) => {
+    let image = studentImage;
+    let imageType = "BASE64";
+    let groupId = "students";
+    let userId = studentUserId;
+    try {
+        let faceToken = await client.faceGetlist(userId, groupId)
+        let tokenImage = faceToken.result ? faceToken.result.face_list[0].face_token : 0
+        let result = await client.match([{
+            image: image,
+            image_type: imageType
+        }, {
+            image: tokenImage,
+            image_type: 'FACE_TOKEN'
+        }])
+        if(result.error_code){
+            throw result;
+        }
+        // res.status(200).json({
+        //     result:true,
+        //     message:"匹配成功",
+        //     score:result.result.score
+        // });
+        return result.result.score
+    } catch (err) {
+        err.status = 400;
+        err.baiduErrCode = err.error_code;
+        err.message = err.error_msg;
+        throw err;
+    }
+};
+
+
+//检测人脸
+exports.cheackFace = async (studentImage)=>{
+    try{
+        let image = studentImage;
+        let imageType = "BASE64";
+        let options = {};
+        options["face_field"] = "quality";
+        let result = await client.detect(
+            image,
+            imageType,
+            options
+            );
+        if(result.error_code){
+            throw result;
+        }
+        qualityControl(result.result.face_list[0]);
+        // res.status(200).json({
+        //     result:true,
+        //     message:"识别成功"
+        // });
+        return;
+    }catch(err){
+        err.status = 400;
+        err.baiduErrCode = err.error_code;
+        err.message = err.error_msg;
+        throw err;
+    }
+}
+
+//删除人脸用户
+exports.deleteFaceUser = async (studentUserId)=>{
+    try{
+        let groupId = "students";
+        let userId = studentUserId;
+        // 调用删除用户
+        let result = await client.deleteUser(groupId, userId);
+        if(result.error_code){
+            throw result;
+        }
+        // res.status(200).json({
+        //     result:"true",
+        //     message:"删除成功",
+        // })
+        return;
+    }catch(err){
+        err.status = 400;
+        err.baiduErrCode = err.error_code;
+        err.message = err.error_msg;
+        throw err;
+    }
+}
+

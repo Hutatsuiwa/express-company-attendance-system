@@ -6,7 +6,7 @@ exports.getAllStudents = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let students = [{
             userId:"temp",
@@ -29,7 +29,7 @@ exports.getStudentByName = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let student = {
             userId:"temp",
@@ -52,7 +52,7 @@ exports.addStudent = async (student)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -65,7 +65,7 @@ exports.updateStudent = async (student)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -78,7 +78,7 @@ exports.deleteStudent = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         connection.release()
         return
@@ -91,7 +91,7 @@ exports.deleteStudent = async (username)=>{
 //     try{
 //         let connection = await getConnection()
 //         let query = promisify(connection.query).bind(connection)
-//         let sql = ""
+//         let sql = "select * from students"
 //         let result = await query(sql)
 //         connection.release()
 //         return
@@ -104,7 +104,7 @@ exports.studentMyself = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = ""
+        let sql = "select * from students"
         let result = await query(sql)
         let student = {
             userId:"temp",
@@ -118,6 +118,34 @@ exports.studentMyself = async (username)=>{
         }
         connection.release()
         return student
+    }catch(err){
+        throw err
+    }
+}
+
+
+//数据验证所需
+exports.findStudent = async(username)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id,username from students where username=?"
+        let result = await query(sql,username)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.validPassword = async(username)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select password from students where username=?"
+        let result = await query(sql,username)
+        connection.release()
+        return result.length ? result[0].password : null
     }catch(err){
         throw err
     }

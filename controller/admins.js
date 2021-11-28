@@ -89,9 +89,9 @@ exports.loginAdmin = async (req,res,next)=>{
 // 获取已登陆管理员的个人信息
 exports.adminMyself = async (req,res,next)=>{
     try{
-        let resutl = await adminModel.getMyself(req.username);
+        let result = await adminModel.adminMyself(req.username);
         res.status(200).json({
-            admin:resutl
+            admin:result
         })
     }catch(err){
         err.message = "获取失败";

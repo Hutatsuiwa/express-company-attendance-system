@@ -73,6 +73,17 @@ exports.getExaminationByCourseTime = async (req,res,next)=>{
 // 添加考试信息
 exports.addExamination = async (req,res,next)=>{
     try{
+        // 自动开始考试
+        const startTimeoutId = setTimeout(() => {
+            await examinationModel.startExamination()
+        }, req.body.examination.startTime*1 - Date.now());
+        // 自动结束考试
+        const closeTimeoutId = setTimeout(() => {
+            await examinationModel.closeExamination()
+        }, req.body.examination.startTime*1 + 2700000);
+        // 将定时器放入examination中
+        examination.startTimeoutId = Number(startTimeoutId)
+        examination.closeTimeoutId = Number(closeTimeoutId)
         await examinationModel.addExamination(req.body.examination);
         res.status(204).end();
     }catch(err){
@@ -85,6 +96,11 @@ exports.addExamination = async (req,res,next)=>{
 // 删除考试信息
 exports.deleteExamination = async (req,res,next)=>{
     try{
+        // 拿到定时器Id
+        let TimeoutId = await examinationModel.findTimeoutId(req.params.examinationId)
+        // 关闭定时器
+        clearTimeout(TimeoutId[0])
+        clearTimeout(TimeoutId[1])
         await examinationModel.deleteExamination(req.params.examinationId);
         res.status(204).end();
     }catch(err){
@@ -97,6 +113,22 @@ exports.deleteExamination = async (req,res,next)=>{
 // 修改考试信息
 exports.updateExamination = async (req,res,next)=>{
     try{
+        // 拿到定时器Id
+        let TimeoutId = await examinationModel.findTimeoutId(req.body.examination.examinationId)
+        // 关闭定时器
+        clearTimeout(TimeoutId[0])
+        clearTimeout(TimeoutId[1])
+        // 设置新开始定时器
+        const startTimeoutId = setTimeout(() => {
+            await examinationModel.startExamination()
+        }, req.body.examination.startTime*1 - Date.now());
+        // 设置新结束定时器
+        const closeTimeoutId = setTimeout(() => {
+            await examinationModel.closeExamination()
+        }, req.body.examination.startTime*1 + 2700000);
+        // 将定时器放入examination中
+        examination.startTimeoutId = Number(startTimeoutId)
+        examination.closeTimeoutId = Number(closeTimeoutId)
         await examinationModel.updateExamination(req.body.examination);
         res.status(204).end();
     }catch(err){
@@ -118,14 +150,4 @@ exports.reservationExamination = async (req,res,next)=>{
     }
 }
 
-// 结束考试
-exports.closeExamination = async (req,res,next)=>{
-    try{
-        await examinationModel.closeExamination(req.body.examinationId);
-        res.status(204).end();
-    }catch(err){
-        err.status = 400;
-        err.message = "结束失败";
-        next(err);
-    }
-}
+
