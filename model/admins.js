@@ -8,33 +8,42 @@ exports.getAllAdmins = async()=>{
         let connection = await getConnection()
         // 将connection.query方法转换成promise格式
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql);
-        let admins = [{
-            userId:"temp",
-            username:"temp",
-            creatTime:"temp",
-            updataTime:"temp"
-        }]
+
+        let sql = `SELECT id,username,create_time,update_time FROM admins`
+        let temp = await query(sql);
+        let admin = {}
+        let result=[]
+        for(let i=0;i<temp.length;i++){
+            admin.userId=temp[i].id
+            admin.username=temp[i].username
+            admin.creatTime=temp[i].create_time
+            admin.updataTime=temp[i].update_time
+            result.push(admin)
+            admin = {}
+        }
+        
         // 释放连接
         connection.release()
-        return admins
+        return result
     }catch(err){
         throw err
     }
 }
+
 exports.getAdminByName = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        let admin = {
-            userId:"temp",
-            username:"temp",
-            creatTime:"temp",
-            updataTime:"temp"
-        }
+
+        // let username="test"
+        let sql = `SELECT id,username,create_time,update_time FROM admins WHERE username=?`
+        let temp = await query(sql,username);
+        let admin = {}
+        admin.userId=temp[0].id
+        admin.username=temp[0].username
+        admin.creatTime=temp[0].create_time
+        admin.updataTime=temp[0].update_time
+
         connection.release()
         return admin
     }catch(err){
@@ -45,9 +54,12 @@ exports.getAdminByName = async (username)=>{
 exports.addAdmin = async (admin)=>{
     try{
         let connection = await getConnection();
-        let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let admin ={"username":"test2","password":"1221"}
+        let parms=[admin.username,admin.password]
+        let sql = `INSERT into admins VALUES(DEFAULT,?,?,DEFAULT,DEFAULT)`
+        await query(sql,parms);
+
         connection.release()
         return
     }catch(err){
@@ -59,8 +71,13 @@ exports.updateAdmin = async (admin)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let admin ={"username":"test2","newname":"qqq","password":"122121211"}
+        let id=await query(`SELECT id FROM admins WHERE username=?`,admin.username);
+        let parms=[admin.newname,admin.password,id[0].id]
+        let sql = `UPDATE admins SET username=?,password=? WHERE id=?`
+        await query(sql,parms);
+
         connection.release()
         return
     }catch(err){
@@ -72,8 +89,11 @@ exports.deleteAdmin = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let username="qqq"
+        let sql=`DELETE FROM admins WHERE username=?`
+        await query(sql,username);
+
         connection.release()
         return
     }catch(err){
@@ -85,14 +105,16 @@ exports.adminMyself = async (username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        let admin = {
-            userId:"temp",
-            username:"temp",
-            creatTime:"temp",
-            updataTime:"temp"
-        }
+
+        // let username="test"
+        let sql = `SELECT id,username,create_time,update_time FROM admins WHERE username=?`
+        let temp = await query(sql,username);
+        let admin = {}
+        admin.userId=temp[0].id
+        admin.username=temp[0].username
+        admin.creatTime=temp[0].create_time
+        admin.updataTime=temp[0].update_time
+
         connection.release()
         return admin
     }catch(err){

@@ -6,20 +6,24 @@ exports.getAllStudents = async ()=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        let students = [{
-            userId:"temp",
-            username:"temp",
-            courses:[{
-                course:"temp",
-                courseState:"temp"
-            }],
-            creatTime:"temp",
-            updataTime:"temp"
-        }]
+
+        let sql = `SELECT id,username,create_time,updata_time FROM students`
+        let temp = await query(sql);
+        let student = {}
+        let result=[]
+        for(let i=0;i<temp.length;i++){
+            student.userId=temp[i].id
+            student.username=temp[i].username
+            let sql2=`SELECT course_id,state FROM students RIGHT JOIN states_detail on id=user_id where id=?`
+            student.courses = await query(sql2,temp[i].id);
+            student.creatTime=temp[i].create_time
+            student.updataTime=temp[i].updata_time
+            result.push(student)
+            student = {}
+        }
+
         connection.release()
-        return students
+        return result
     }catch(err){
         throw err
     }
@@ -29,18 +33,18 @@ exports.getStudentByName = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        let student = {
-            userId:"temp",
-            username:"temp",
-            courses:[{
-                course:"temp",
-                courseState:"temp"
-            }],
-            creatTime:"temp",
-            updataTime:"temp"
-        }
+
+        // let username="test"
+        let sql = `SELECT id,username,create_time,updata_time FROM students where username=?`
+        let temp = await query(sql,username);
+        let student = {}
+        student.userId=temp[0].id
+        student.username=temp[0].username
+        let sql2=`SELECT course_id,state FROM students RIGHT JOIN states_detail on id=user_id where id=?`
+        student.courses = await query(sql2,temp[0].id);
+        student.creatTime=temp[0].create_time
+        student.updataTime=temp[0].updata_time
+
         connection.release()
         return student
     }catch(err){
@@ -52,8 +56,12 @@ exports.addStudent = async (student)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let student={username:"李四",password:"123"}
+        let parms=[student.username,student.password]
+        let sql = `INSERT INTO students VALUES(DEFAULT,?,?,DEFAULT,DEFAULT)`
+        await query(sql,parms)
+
         connection.release()
         return
     }catch(err){
@@ -65,8 +73,12 @@ exports.updateStudent = async (student)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let student={username:"李四",newName:"李四106",password:"1111123"}
+        let parms=[student.newName,student.password,student.username]
+        let sql = `UPDATE students set username=?,PASSWORD=? WHERE username=?`
+        await query(sql,parms)
+
         connection.release()
         return
     }catch(err){
@@ -78,8 +90,12 @@ exports.deleteStudent = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
+
+        // let username="李四106"
+        let sql = `DELETE FROM students where username=?`
+        await query(sql,username)
+        //后续删除其关联的成绩已由数据库触发器实现
+
         connection.release()
         return
     }catch(err){
@@ -87,35 +103,22 @@ exports.deleteStudent = async (username)=>{
     }
 }
 
-// exports.loginStudent = async ()=>{
-//     try{
-//         let connection = await getConnection()
-//         let query = promisify(connection.query).bind(connection)
-//         let sql = "select * from students"
-//         let result = await query(sql)
-//         connection.release()
-//         return
-//     }catch(err){
-//         throw err
-//     }
-// }
-
 exports.studentMyself = async (username)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        let student = {
-            userId:"temp",
-            username:"temp",
-            courses:[{
-                course:"temp",
-                courseState:"temp"
-            }],
-            creatTime:"temp",
-            updataTime:"temp"
-        }
+
+        // let username="test"
+        let sql = `SELECT id,username,create_time,updata_time FROM students where username=?`
+        let temp = await query(sql,username);
+        let student = {}
+        student.userId=temp[0].id
+        student.username=temp[0].username
+        let sql2=`SELECT course_id,state FROM students RIGHT JOIN states_detail on id=user_id where id=?`
+        student.courses = await query(sql2,temp[0].id);
+        student.creatTime=temp[0].create_time
+        student.updataTime=temp[0].updata_time
+
         connection.release()
         return student
     }catch(err){
