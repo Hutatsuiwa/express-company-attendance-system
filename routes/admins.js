@@ -16,16 +16,16 @@ const isAdmin = require('../middleware/isAdmin')
 router.get("/search/all",authorization,isAdmin,adminCtl.getAllAdmins)
 
 // 通过用户名获取管理员信息
-router.get("/search/:username",authorization,isAdmin,adminCtl.getAdminByName);
+router.get("/search/:username",authorization,isAdmin,adminValidotor.find,adminCtl.getAdminByName);
 
 // 修改管理员信息
-router.put("/updata",authorization,isAdmin,adminCtl.updateAdmin);
+router.put("/updata",passwordMd5,authorization,isAdmin,adminValidotor.update,adminCtl.updateAdmin);
 
-// 通过用户名删除管理员信息
-router.delete("/delete/:username",authorization,isAdmin,adminCtl.deleteAdmin);
+// 通过用户ID删除管理员信息
+router.delete("/delete/:userId",authorization,isAdmin,adminValidotor.delete,adminCtl.deleteAdmin);
 
 // 添加管理员信息
-router.post("/add",authorization,isAdmin,adminCtl.addAdmin);
+router.post("/add",passwordMd5,authorization,isAdmin,adminValidotor.add,adminCtl.addAdmin);
 
 // 管理员登陆
 router.post("/login",passwordMd5,adminValidotor.login,adminCtl.loginAdmin);

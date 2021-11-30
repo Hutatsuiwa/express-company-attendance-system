@@ -153,7 +153,7 @@ exports.deleteMultipleQuestion = async (req,res,next)=>{
 // 通过用户名和科目类型获取试卷
 exports.getPaperByUserCourse = async (req,res,next)=>{
     try{
-        let result = await questionModel.getPaperByUserCourse(req.params.username,req.params.courseId)
+        let result = await questionModel.getPaperByUserCourse(req.params.userId,req.params.courseId)
         res.status(200).json({
             questions:result
         })

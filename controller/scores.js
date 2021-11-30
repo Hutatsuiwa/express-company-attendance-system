@@ -15,9 +15,9 @@ exports.getScoreByCourse = async (req,res,next)=>{
 }
 
 // 通过学员名和科目类型获取学员成绩
-exports.getScoreByNameCourse = async (req,res,next)=>{
+exports.getScoreByUserCourse = async (req,res,next)=>{
     try{
-        let result = await scoreModel.getScoreByNameCourse(req.params.username,req.params.courseId)
+        let result = await scoreModel.getScoreByNameCourse(req.params.userId,req.params.courseId)
         res.status(200).json({
             score:result
         })
@@ -57,7 +57,7 @@ exports.updateScore = async (req,res,next)=>{
 // 删除学员成绩
 exports.deleteScore = async (req,res,next)=>{
     try{
-        await scoreModel.deleteScore(req.params.username,req.params.courseId)
+        await scoreModel.deleteScore(req.params.userId,req.params.courseId)
         res.status(204).end()
     }catch(err){
         err.status = 400

@@ -1,8 +1,8 @@
-const studentModel = require('../model/admins')
+const studentModel = require('../model/students')
 
 module.exports = async (req,res,next)=>{
     try{
-        const result = await studentModel.findStudent(req.username)
+        const result = await studentModel.findStudentByName(req.username)
         if(!result.length){
             let err
             throw err

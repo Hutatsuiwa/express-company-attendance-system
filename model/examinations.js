@@ -10,7 +10,9 @@ exports.getAllExaminations = async ()=>{
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
+            roomId:"temp",
             roomName:"temp",
+            courseId:"temp",
             courseName:"temp",
             startTime:"temp",
             reservationNum:"temp",
@@ -23,7 +25,7 @@ exports.getAllExaminations = async ()=>{
     }
 }
     
-exports.getExaminationByUsername = async (username)=>{
+exports.getExaminationByUserId = async (userId)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
@@ -31,7 +33,9 @@ exports.getExaminationByUsername = async (username)=>{
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
+            roomId:"temp",
             roomName:"temp",
+            courseId:"temp",
             courseName:"temp",
             startTime:"temp",
             reservationNum:"temp",
@@ -44,7 +48,7 @@ exports.getExaminationByUsername = async (username)=>{
     }
 }
     
-exports.getExaminationDoing = async (username)=>{
+exports.getExaminationDoing = async (userId)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
@@ -54,6 +58,7 @@ exports.getExaminationDoing = async (username)=>{
             examinationId:"temp",
             roomId:"temp",
             roomName:"temp",
+            courseId:"temp",
             courseName:"temp",
             startTime:"temp",
             examinationState:"temp"
@@ -65,7 +70,7 @@ exports.getExaminationDoing = async (username)=>{
     }
 }
 
-exports.getExaminationByCourseName = async (courseName)=>{
+exports.getExaminationByCourseId = async (courseId)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
@@ -73,7 +78,9 @@ exports.getExaminationByCourseName = async (courseName)=>{
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
+            roomId:"temp",
             roomName:"temp",
+            courseId:"temp",
             courseName:"temp",
             startTime:"temp",
             reservationNum:"temp",
@@ -86,7 +93,7 @@ exports.getExaminationByCourseName = async (courseName)=>{
     }
 }
     
-exports.getExaminationByCourseTime = async (courseName,startTime,endTime)=>{
+exports.getExaminationByCourseTime = async (courseId,startTime,endTime)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
@@ -94,7 +101,9 @@ exports.getExaminationByCourseTime = async (courseName,startTime,endTime)=>{
         let result = await query(sql)
         let examinations=[{
             examinationId:"temp",
+            roomId:"temp",
             roomName:"temp",
+            courseId:"temp",
             courseName:"temp",
             startTime:"temp",
             reservationNum:"temp",
@@ -159,6 +168,7 @@ exports.reservationExamination = async (reservation)=>{
     }
 }
 
+//开启与关闭考试
 exports.startExamination = async (examinationId)=>{
     try{
         let connection = await getConnection();
@@ -192,6 +202,33 @@ exports.findTimeoutId = async (examinationId)=>{
         let query = promisify(connection.query).bind(connection)
         let sql = "select * from students"
         let result = await query(sql)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+//数据验证所需
+exports.findCourseById = async(courseId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select course_name from courses where id=?"
+        let result = await query(sql,courseId)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findExaminationById = async(examinationId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id from examinations where id=?"
+        let result = await query(sql,examinationId)
         connection.release()
         return result
     }catch(err){

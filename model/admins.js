@@ -13,11 +13,11 @@ exports.getAllAdmins = async()=>{
         let temp = await query(sql);
         let admin = {}
         let result=[]
-        for(let i=0;i<temp.length;i++){
-            admin.userId=temp[i].id
-            admin.username=temp[i].username
-            admin.creatTime=temp[i].create_time
-            admin.updataTime=temp[i].update_time
+        for(let item of temp){
+            admin.userId=item.id
+            admin.username=item.username
+            admin.creatTime=item.create_time
+            admin.updataTime=item.update_time
             result.push(admin)
             admin = {}
         }
@@ -35,7 +35,7 @@ exports.getAdminByName = async (username)=>{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
 
-        // let username="test"
+        // let userId="test"
         let sql = `SELECT id,username,create_time,update_time FROM admins WHERE username=?`
         let temp = await query(sql,username);
         let admin = {}
@@ -54,6 +54,7 @@ exports.getAdminByName = async (username)=>{
 exports.addAdmin = async (admin)=>{
     try{
         let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
 
         // let admin ={"username":"test2","password":"1221"}
         let parms=[admin.username,admin.password]
@@ -63,6 +64,7 @@ exports.addAdmin = async (admin)=>{
         connection.release()
         return
     }catch(err){
+        console.log(err)
         throw err
     }
 }
@@ -73,8 +75,7 @@ exports.updateAdmin = async (admin)=>{
         let query = promisify(connection.query).bind(connection)
 
         // let admin ={"username":"test2","newname":"qqq","password":"122121211"}
-        let id=await query(`SELECT id FROM admins WHERE username=?`,admin.username);
-        let parms=[admin.newname,admin.password,id[0].id]
+        let parms=[admin.username,admin.password,admin.userId]
         let sql = `UPDATE admins SET username=?,password=? WHERE id=?`
         await query(sql,parms);
 
@@ -85,14 +86,14 @@ exports.updateAdmin = async (admin)=>{
     }
 }
 
-exports.deleteAdmin = async (username)=>{
+exports.deleteAdmin = async (userId)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
 
         // let username="qqq"
-        let sql=`DELETE FROM admins WHERE username=?`
-        await query(sql,username);
+        let sql=`DELETE FROM admins WHERE id=?`
+        await query(sql,userId);
 
         connection.release()
         return
@@ -123,12 +124,25 @@ exports.adminMyself = async (username)=>{
 }
 
 //数据验证所需
-exports.findAdmin = async(username)=>{
+exports.findAdminByName = async(username)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
         let sql = "select username from admins where username=?"
         let result = await query(sql,username)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findAdminById = async(userId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id, username from admins where id=?"
+        let result = await query(sql,userId)
         connection.release()
         return result
     }catch(err){

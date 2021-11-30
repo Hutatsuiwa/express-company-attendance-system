@@ -2,7 +2,7 @@ const adminModel = require('../model/admins')
 
 module.exports = async (req,res,next)=>{
     try{
-        const result = await adminModel.findAdmin(req.username)
+        const result = await adminModel.findAdminByName(req.username)
         if(!result.length){
             let err = {}
             throw err

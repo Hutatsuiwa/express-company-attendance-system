@@ -24,7 +24,7 @@ exports.getScoreByCourse = async (courseId)=>{
     }
 }
 
-exports.getScoreByNameCourse = async (username,courseId)=>{
+exports.getScoreByUserCourse = async (userId,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
@@ -81,7 +81,7 @@ exports.updateScore = async (score)=>{
     }
 }
 
-exports.deleteScore = async (username,courseId)=>{
+exports.deleteScore = async (userId,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)

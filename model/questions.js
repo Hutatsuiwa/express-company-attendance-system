@@ -191,7 +191,7 @@ exports.deleteMultipleQuestion = async (questionId)=>{
     }
 }
 
-exports.getPaperByUserCourse = async (username,courseId)=>{
+exports.getPaperByUserCourse = async (userId,courseId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
@@ -278,6 +278,47 @@ exports.submitAnswer = async (submit)=>{
         let result = await query(sql)
         connection.release()
         return
+    }catch(err){
+        throw err
+    }
+}
+
+
+// 数据验证相关
+exports.findChoiceQuestionId = async (questionId)=>{
+    try{
+        let connection = await getConnection()
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id from questions_choice where id=?"
+        let result = await query(sql,questionId)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findJudgeQuestionId = async (questionId)=>{
+    try{
+        let connection = await getConnection()
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id from questions_judge where id=?"
+        let result = await query(sql,questionId)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findMultipleQuestionId = async (questionId)=>{
+    try{
+        let connection = await getConnection()
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id from questions_choices where id=?"
+        let result = await query(sql,questionId)
+        connection.release()
+        return result
     }catch(err){
         throw err
     }

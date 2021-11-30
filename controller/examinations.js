@@ -15,9 +15,9 @@ exports.getAllExaminations = async (req,res,next)=>{
 }
 
 // 获取学员能够预约的考试信息
-exports.getExaminationByUsername = async (req,res,next)=>{
+exports.getExaminationByUserId = async (req,res,next)=>{
     try{
-        let result = await examinationModel.getExaminationByUsername(req.params.username);
+        let result = await examinationModel.getExaminationByUserId(req.params.userId);
         res.status(200).json({
             examinations:result
         })
@@ -31,7 +31,7 @@ exports.getExaminationByUsername = async (req,res,next)=>{
 // 获取学员已预约/完成的考试信息
 exports.getExaminationDoing = async (req,res,next)=>{
     try{
-        let result = await examinationModel.getExaminationDoing(req.params.username);
+        let result = await examinationModel.getExaminationDoing(req.params.userId);
         res.status(200).json({
             examinationDetail:result
         })
@@ -43,9 +43,9 @@ exports.getExaminationDoing = async (req,res,next)=>{
 }
 
 // 获取特定科目的考试信息
-exports.getExaminationByCourseName = async (req,res,next)=>{
+exports.getExaminationByCourseId = async (req,res,next)=>{
     try{
-        let result = await examinationModel.getExaminationByCourseName(req.params.courseName);
+        let result = await examinationModel.getExaminationByCourseId(req.params.courseId);
         res.status(200).json({
             examinations:result
         })
@@ -59,7 +59,7 @@ exports.getExaminationByCourseName = async (req,res,next)=>{
 // 获取特定时间段内的特定科目的考试信息
 exports.getExaminationByCourseTime = async (req,res,next)=>{
     try{
-        let result = await examinationModel.getExaminationByCourseTime(req.params.courseName,req.params.startTime,req.params.endTime);
+        let result = await examinationModel.getExaminationByCourseTime(req.params.courseId,req.params.startTime,req.params.endTime);
         res.status(200).json({
             examinations:result
         })
@@ -74,11 +74,11 @@ exports.getExaminationByCourseTime = async (req,res,next)=>{
 exports.addExamination = async (req,res,next)=>{
     try{
         // 自动开始考试
-        const startTimeoutId = setTimeout(() => {
+        const startTimeoutId = setTimeout(async () => {
             await examinationModel.startExamination()
         }, req.body.examination.startTime*1 - Date.now());
         // 自动结束考试
-        const closeTimeoutId = setTimeout(() => {
+        const closeTimeoutId = setTimeout(async () => {
             await examinationModel.closeExamination()
         }, req.body.examination.startTime*1 + 2700000);
         // 将定时器放入examination中
@@ -98,6 +98,7 @@ exports.deleteExamination = async (req,res,next)=>{
     try{
         // 拿到定时器Id
         let TimeoutId = await examinationModel.findTimeoutId(req.params.examinationId)
+        console.log(TimeoutId)
         // 关闭定时器
         clearTimeout(TimeoutId[0])
         clearTimeout(TimeoutId[1])
@@ -119,11 +120,11 @@ exports.updateExamination = async (req,res,next)=>{
         clearTimeout(TimeoutId[0])
         clearTimeout(TimeoutId[1])
         // 设置新开始定时器
-        const startTimeoutId = setTimeout(() => {
+        const startTimeoutId = setTimeout(async () => {
             await examinationModel.startExamination()
         }, req.body.examination.startTime*1 - Date.now());
         // 设置新结束定时器
-        const closeTimeoutId = setTimeout(() => {
+        const closeTimeoutId = setTimeout(async () => {
             await examinationModel.closeExamination()
         }, req.body.examination.startTime*1 + 2700000);
         // 将定时器放入examination中

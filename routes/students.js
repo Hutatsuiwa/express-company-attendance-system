@@ -17,16 +17,16 @@ const isStudnet = require('../middleware/isStudent')
 router.get('/search/all',authorization,isAdmin,studnetCtl.getAllStudents);
 
 // 通过用户名获取学员信息
-router.get('/search/:username',authorization,isAdmin,studnetCtl.getStudentByName);
+router.get('/search/:username',authorization,isAdmin,studentValidotor.find,studnetCtl.getStudentByName);
 
 // 添加学员信息
-router.post('/add',authorization,isAdmin,studnetCtl.addStudent);
+router.post('/add',passwordMd5,authorization,isAdmin,studnetCtl.addStudent);
 
 // 修改学员信息
-router.put('/update',authorization,isAdmin,studnetCtl.updateStudent);
+router.put('/update',passwordMd5,authorization,isAdmin,studnetCtl.updateStudent);
 
-// 通过用户名删除学员信息
-router.delete('/delete/:username',authorization,isAdmin,studnetCtl.deleteStudent);
+// 通过用户ID删除学员信息
+router.delete('/delete/:userId',authorization,isAdmin,studnetCtl.deleteStudent);
 
 // 学员登录
 router.post('/login',passwordMd5,studentValidotor.login,studnetCtl.loginStudent);

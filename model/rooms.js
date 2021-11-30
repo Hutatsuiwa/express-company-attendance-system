@@ -22,7 +22,7 @@ exports.getAllRoom = async ()=>{
     }
 }
 
-exports.getRoomByRoomName = async (roomName)=>{
+exports.getRoomByRoomId = async (roomId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
@@ -42,7 +42,7 @@ exports.getRoomByRoomName = async (roomName)=>{
     }
 }
 
-exports.getRoomStateByRoomName = async (roomName)=>{
+exports.getRoomStateByRoomId = async (roomId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
@@ -73,7 +73,7 @@ exports.addRoom = async (room)=>{
     }
 }
 
-exports.deleteRoom = async (roomName)=>{
+exports.deleteRoom = async (roomId)=>{
     try{
         let connection = await getConnection()
         let query = promisify(connection.query).bind(connection)
@@ -94,6 +94,20 @@ exports.updateRoom = async (room)=>{
         let result = await query(sql)
         connection.release()
         return
+    }catch(err){
+        throw err
+    }
+}
+
+//数据验证所需
+exports.findRoomById = async(roomId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select room_name from examination_rooms where id=?"
+        let result = await query(sql,roomId)
+        connection.release()
+        return result
     }catch(err){
         throw err
     }

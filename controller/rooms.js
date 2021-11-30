@@ -14,10 +14,10 @@ exports.getAllRoom = async (req,res,next)=>{
     }
 }
 
-// 通过考场名获取考场信息
-exports.getRoomByRoomName = async (req,res,next)=>{
+// 通过考场ID获取考场信息
+exports.getRoomByRoomId = async (req,res,next)=>{
     try{
-        let result = await roomModel.getRoomByRoomName(req.params.roomName);
+        let result = await roomModel.getRoomByRoomId(req.params.roomId);
         res.status(200).json({
             rooms:result
         });
@@ -28,10 +28,10 @@ exports.getRoomByRoomName = async (req,res,next)=>{
     }
 }
 
-// 通过考场名获取考场状态信息
-exports.getRoomStateByRoomName = async (req,res,next)=>{
+// 通过考场ID获取考场状态信息
+exports.getRoomStateByRoomId = async (req,res,next)=>{
     try{
-        let result = await roomModel.getRoomStateByRoomName(req.params.roomName);
+        let result = await roomModel.getRoomStateByRoomId(req.params.roomId);
         res.status(200).json({
             roomState:result
         });
@@ -57,7 +57,7 @@ exports.addRoom = async (req,res,next)=>{
 // 删除考场信息
 exports.deleteRoom = async (req,res,next)=>{
     try{
-        await roomModel.deleteRoom(req.params.roomName);
+        await roomModel.deleteRoom(req.params.roomId);
         res.status(204).end();
     }catch(err){
         err.status = 400

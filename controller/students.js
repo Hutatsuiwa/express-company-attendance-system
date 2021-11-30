@@ -37,7 +37,7 @@ exports.addStudent = async (req,res,next)=>{
     try{
         await studentModel.addStudent(req.student);
         // 插入成功后，从数据库中取出userId
-        const studentUserId = await studentModel.findStudent(req.body.student.username)[0].id
+        const studentUserId = await studentModel.findStudentByName(req.body.student.username)[0].id
         const studentImage = req.body.student.image
         // 检测人脸质量后再注册人脸
         await baiduFace.cheackFace(studentImage)
@@ -53,7 +53,7 @@ exports.addStudent = async (req,res,next)=>{
 // 修改学员信息
 exports.updateStudent = async (req,res,next)=>{
     try{
-        await studentModel.updateStudent(req.student);
+        await studentModel.updateStudent(req.body.student);
         res.status(204).end();
     }catch(err){
         err.status=400;
@@ -62,13 +62,11 @@ exports.updateStudent = async (req,res,next)=>{
     }
 }
 
-// 通过用户名删除学员信息
+// 通过用户ID删除学员信息
 exports.deleteStudent = async (req,res,next)=>{
     try{
-        // 先获取userId
-        const studentUserId = await studentModel.findStudent(req.params.username)[0].id
-        await studentModel.deleteStudent(req.params.username);
-        await baiduFace.deleteFaceUser(studentUserId)
+        await studentModel.deleteStudent(req.params.userId);
+        await baiduFace.deleteFaceUser(req.params.userId)
         res.status(204).end();
     }catch(err){
         err.status = err.status ? err.status : 400;

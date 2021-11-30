@@ -34,7 +34,7 @@ exports.getAdminByName = async (req,res,next)=>{
 // 添加管理员信息
 exports.addAdmin = async (req,res,next)=>{
     try{
-        await adminModel.addAdmin(req.admin);
+        await adminModel.addAdmin(req.body.admin);
         res.status(204).end();
     }catch(err){
         err.status=400;
@@ -46,7 +46,7 @@ exports.addAdmin = async (req,res,next)=>{
 // 修改管理员信息
 exports.updateAdmin = async (req,res,next)=>{
     try{
-        await adminModel.updateAdmin(req.admin);
+        await adminModel.updateAdmin(req.body.admin);
         res.status(204).end();
     }catch(err){
         err.status=400;
@@ -58,7 +58,7 @@ exports.updateAdmin = async (req,res,next)=>{
 // 通过用户名删除管理员信息
 exports.deleteAdmin = async (req,res,next)=>{
     try{
-        await adminModel.deleteAdmin(req.params.username);
+        await adminModel.deleteAdmin(req.params.userId);
         res.status(204).end();
     }catch(err){
         err.status=400;
