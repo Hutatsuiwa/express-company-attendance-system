@@ -54,6 +54,11 @@ exports.findCourseLimit= [
             if(!result.length){
                 return Promise.reject("该科目不存在")
             }
+        }),
+        param('largerThen').custom(async (largerThen)=>{
+            if(largerThen<0||largerThen>100){
+                return Promise.reject("限制值不正确")
+            }
         })
     ])
 ]   
@@ -61,11 +66,11 @@ exports.findCourseLimit= [
 // 删除参数验证
 exports.delete = [
     validate([
-        body('scores.userId').notEmpty().withMessage("请传入学员ID"),
-        body('scores.courseId').notEmpty().withMessage("请传科目ID")
+        param('userId').notEmpty().withMessage("请传入学员ID"),
+        param('courseId').notEmpty().withMessage("请传科目ID")
     ]),
     validate([
-        body('scores.userId').custom(async (userId)=>{
+        param('userId').custom(async (userId)=>{
             const result = await studentModel.findStudentById(userId)
             if(!result.length){
                 return Promise.reject("该学员不存在")
@@ -73,7 +78,7 @@ exports.delete = [
         })
     ]),
     validate([
-        body('scores.courseId').custom(async (courseId)=>{
+        param('courseId').custom(async (courseId)=>{
             let result = await examinationModel.findCourseById(courseId)
             if(!result.length){
                 return Promise.reject("该科目不存在")
@@ -85,12 +90,12 @@ exports.delete = [
 // 修改参数验证
 exports.update = [
     validate([
-        body('scores.userId').notEmpty().withMessage("请传入学员ID"),
-        body('scores.courseId').notEmpty().withMessage("请传科目ID"),
-        body('scores.score').notEmpty().withMessage("请传入分数"),
+        body('score.userId').notEmpty().withMessage("请传入学员ID"),
+        body('score.courseId').notEmpty().withMessage("请传科目ID"),
+        body('score.score').notEmpty().withMessage("请传入分数"),
     ]),
     validate([
-        body('scores.userId').custom(async (userId)=>{
+        body('score.userId').custom(async (userId)=>{
             const result = await studentModel.findStudentById(userId)
             if(!result.length){
                 return Promise.reject("该学员不存在")
@@ -98,7 +103,7 @@ exports.update = [
         })
     ]),
     validate([
-        body('scores.courseId').custom(async (courseId)=>{
+        body('score.courseId').custom(async (courseId)=>{
             let result = await examinationModel.findCourseById(courseId)
             if(!result.length){
                 return Promise.reject("该科目不存在")
@@ -106,7 +111,7 @@ exports.update = [
         })
     ]),
     validate([
-        body('scores.score').custom((score)=>{
+        body('score.score').custom(async (score)=>{
             if(score>100||score<0){
                 return Promise.reject("分数设置不合法")
             }

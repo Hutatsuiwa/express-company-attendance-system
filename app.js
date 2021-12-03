@@ -31,11 +31,7 @@ app.use('/api/students', studentsRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/scores', scoresRouter);
-app.post('/api/test',(req,res,next)=>{
-  console.log(req.body);
-  // console.log(req.fields);
-  res.json({123:123})
-})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

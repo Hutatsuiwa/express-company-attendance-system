@@ -82,11 +82,12 @@ exports.addExamination = async (req,res,next)=>{
             await examinationModel.closeExamination()
         }, req.body.examination.startTime*1 + 2700000);
         // 将定时器放入examination中
-        examination.startTimeoutId = Number(startTimeoutId)
-        examination.closeTimeoutId = Number(closeTimeoutId)
+        req.body.examination.startTimeoutId = Number(startTimeoutId)
+        req.body.examination.closeTimeoutId = Number(closeTimeoutId)
         await examinationModel.addExamination(req.body.examination);
         res.status(204).end();
     }catch(err){
+        console.log(err)
         err.status = 400;
         err.message = "添加失败";
         next(err);
@@ -100,8 +101,8 @@ exports.deleteExamination = async (req,res,next)=>{
         let TimeoutId = await examinationModel.findTimeoutId(req.params.examinationId)
         console.log(TimeoutId)
         // 关闭定时器
-        clearTimeout(TimeoutId[0])
-        clearTimeout(TimeoutId[1])
+        clearTimeout(TimeoutId[0].startTimeoutId)
+        clearTimeout(TimeoutId[0].closeTimeoutId)
         await examinationModel.deleteExamination(req.params.examinationId);
         res.status(204).end();
     }catch(err){
@@ -117,8 +118,8 @@ exports.updateExamination = async (req,res,next)=>{
         // 拿到定时器Id
         let TimeoutId = await examinationModel.findTimeoutId(req.body.examination.examinationId)
         // 关闭定时器
-        clearTimeout(TimeoutId[0])
-        clearTimeout(TimeoutId[1])
+        clearTimeout(TimeoutId[0].startTimeoutId)
+        clearTimeout(TimeoutId[0].closeTimeoutId)
         // 设置新开始定时器
         const startTimeoutId = setTimeout(async () => {
             await examinationModel.startExamination()

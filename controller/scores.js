@@ -17,7 +17,7 @@ exports.getScoreByCourse = async (req,res,next)=>{
 // 通过学员名和科目类型获取学员成绩
 exports.getScoreByUserCourse = async (req,res,next)=>{
     try{
-        let result = await scoreModel.getScoreByNameCourse(req.params.userId,req.params.courseId)
+        let result = await scoreModel.getScoreByUserCourse(req.params.userId,req.params.courseId)
         res.status(200).json({
             score:result
         })

@@ -17,10 +17,10 @@ const isAdmin = require('../middleware/isAdmin')
 router.get("/search/:courseId",authorization,isAdmin,scoreValidotor.findCourseId,scoreCtl.getScoreByCourse);
 
 // 通过学员ID和科目ID获取学员成绩
-router.get("/search/:userId/:courseId",authorization,isAdmin,scoreValidotor.findUserCourse,scoreCtl.getScoreByUserCourse);
+router.get("/search/usercourse/:userId/:courseId",authorization,isAdmin,scoreValidotor.findUserCourse,scoreCtl.getScoreByUserCourse);
 
 // 通过科目ID和分数限制获取所有学员成绩
-router.get("/search/:courseId/:largerThen",authorization,isAdmin,scoreValidotor.findCourseLimit,scoreCtl.getScoreByCourseLarge);
+router.get("/search/courselimit/:courseId/:largerThen",authorization,isAdmin,scoreValidotor.findCourseLimit,scoreCtl.getScoreByCourseLarge);
 
 // 修改学员成绩
 router.put("/update",authorization,isAdmin,scoreValidotor.update,scoreCtl.updateScore);

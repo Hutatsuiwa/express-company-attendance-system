@@ -227,8 +227,21 @@ exports.findExaminationById = async(examinationId)=>{
     try{
         let connection = await getConnection();
         let query = promisify(connection.query).bind(connection)
-        let sql = "select id from examinations where id=?"
+        let sql = "select id,start_time from examinations where id=?"
         let result = await query(sql,examinationId)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findExaminationByRoom = async(roomId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select start_time from examinations where room_id=?"
+        let result = await query(sql,roomId)
         connection.release()
         return result
     }catch(err){

@@ -16,16 +16,16 @@ exports.choiceAdd = [
         body("choice.options.*.flag").notEmpty().withMessage("传入选项对错标识不能为空")
     ]),
     validate([
-        body("choice.options.*.key").custom((key,{req})=>{
+        body("choice.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.choice.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("choice.options.*.flag").custom(flag=>{
+        body("choice.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -45,16 +45,16 @@ exports.judgeAdd = [
         body("judge.options.*.flag").notEmpty().withMessage("传入选项对错标识不能为空")
     ]),
     validate([
-        body("judge.options.*.key").custom((key,{req})=>{
+        body("judge.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.judge.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("judge.options.*.flag").custom(flag=>{
+        body("judge.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -74,16 +74,16 @@ exports.multipleAdd = [
         body("multiple.options.*.flag").notEmpty().withMessage("传入选项对错标识不能为空")
     ]),
     validate([
-        body("multiple.options.*.key").custom((key,{req})=>{
+        body("multiple.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.multiple.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("multiple.options.*.flag").custom(flag=>{
+        body("multiple.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -112,16 +112,16 @@ exports.choiceUpdate = [
         })
     ]),
     validate([
-        body("choice.options.*.key").custom((key,{req})=>{
+        body("choice.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.choice.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("choice.options.*.flag").custom(flag=>{
+        body("choice.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -150,16 +150,16 @@ exports.judgeUpdate = [
         })
     ]),
     validate([
-        body("judge.options.*.key").custom((key,{req})=>{
+        body("judge.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.judge.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("judge.options.*.flag").custom(flag=>{
+        body("judge.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -188,16 +188,16 @@ exports.multipleUpdate = [
         })
     ]),
     validate([
-        body("multiple.options.*.key").custom((key,{req})=>{
+        body("multiple.options.*.key").custom(async (key,{req})=>{
             let num = 0
-            for(let item of req.body.options){
+            for(let item of req.body.multiple.options){
                 if(key === item.key) num++
             }
             if(num>1){
                 return Promise.reject("不能有重复的key值")
             }
         }),
-        body("multiple.options.*.flag").custom(flag=>{
+        body("multiple.options.*.flag").custom(async flag=>{
             if(flag != 0 && flag != 1){
                 return Promise.reject("flag值必须为0或1")
             }
@@ -290,18 +290,18 @@ exports.findExamination = [
 // 提交参数验证
 exports.submit = [
     validate([
-        body("userId").notEmpty().withMessage("传入学员ID不能为空"),
-        body("examinationId").notEmpty().withMessage("传入考试ID不能为空"),
-        body("answer").notEmpty().withMessage("传入答案不能为空")
+        body("submit.userId").notEmpty().withMessage("传入学员ID不能为空"),
+        body("submit.examinationId").notEmpty().withMessage("传入考试ID不能为空"),
+        body("submit.answer").notEmpty().withMessage("传入答案不能为空")
     ]),
     validate([
-        param("userId").custom(async userId=>{
+        body("submit.userId").custom(async userId=>{
             let result = await studentModel.findStudentById(userId)
             if(!result.length){
                 return Promise.reject("该学生不存在")
             }
         }),
-        body("examinationId").custom(async examinationId=>{
+        body("submit.examinationId").custom(async examinationId=>{
             let result = await examinationModel.findExaminationById(examinationId)
             if(!result.length){
                 return Promise.reject("该场考试不存在")

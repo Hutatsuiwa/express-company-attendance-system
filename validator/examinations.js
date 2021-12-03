@@ -82,9 +82,16 @@ exports.add = [
         })
     ]),
     validate([
-        body('examination.startTime').custom(async (startTime)=>{
+        body('examination.startTime').custom(async (startTime,{ req })=>{
+            let result = await examinationModel.findExaminationByRoom(req.body.examination.roomId)
             if(startTime<Date.now()){
                 return Promise.reject("开始时间设置过早")
+            }
+            console.log(result)
+            for(let item of result){
+                if(startTime*1<item.start_time*1+2700000){
+                    return Promise.reject("该考场在此时间正在考试，无法设置新考试")
+                }
             }
         })
     ])
@@ -139,9 +146,15 @@ exports.update = [
     ]),
     validate([
         body('examination.startTime').custom(async (startTime)=>{
+            let result = await examinationModel.findExaminationByRoom(req.body.examination.roomId)
             if(startTime<Date.now()){
                 return Promise.reject("开始时间设置过早")
             }
+            result.forEach((item)=>{
+                if(startTime*1<item.startTime*1+2700000){
+                    return Promise.reject("该考场在此时间正在考试，无法设置新考试")
+                }
+            })
         })
     ])
 ]
@@ -165,6 +178,14 @@ exports.reservation = [
             let result = await examinationModel.findExaminationById(examinationId)
             if(!result.length){
                 return Promise.reject("该场考试不存在")
+            }
+        })
+    ]),
+    validate([
+        body('reservation.examinationId').custom(async (examinationId)=>{
+            let result = await examinationModel.findExaminationById(examinationId)
+            if(result[0].start_time<Date.now()){
+                return Promise.reject("该场考试已结束")
             }
         })
     ])
