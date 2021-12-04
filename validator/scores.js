@@ -63,29 +63,29 @@ exports.findCourseLimit= [
     ])
 ]   
 
-// 删除参数验证
-exports.delete = [
-    validate([
-        param('userId').notEmpty().withMessage("请传入学员ID"),
-        param('courseId').notEmpty().withMessage("请传科目ID")
-    ]),
-    validate([
-        param('userId').custom(async (userId)=>{
-            const result = await studentModel.findStudentById(userId)
-            if(!result.length){
-                return Promise.reject("该学员不存在")
-            }
-        })
-    ]),
-    validate([
-        param('courseId').custom(async (courseId)=>{
-            let result = await examinationModel.findCourseById(courseId)
-            if(!result.length){
-                return Promise.reject("该科目不存在")
-            }
-        })
-    ])
-]
+// // 删除参数验证
+// exports.delete = [
+//     validate([
+//         param('userId').notEmpty().withMessage("请传入学员ID"),
+//         param('courseId').notEmpty().withMessage("请传科目ID")
+//     ]),
+//     validate([
+//         param('userId').custom(async (userId)=>{
+//             const result = await studentModel.findStudentById(userId)
+//             if(!result.length){
+//                 return Promise.reject("该学员不存在")
+//             }
+//         })
+//     ]),
+//     validate([
+//         param('courseId').custom(async (courseId)=>{
+//             let result = await examinationModel.findCourseById(courseId)
+//             if(!result.length){
+//                 return Promise.reject("该科目不存在")
+//             }
+//         })
+//     ])
+// ]
 
 // 修改参数验证
 exports.update = [

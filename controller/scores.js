@@ -54,14 +54,14 @@ exports.updateScore = async (req,res,next)=>{
     }
 }
 
-// 删除学员成绩
-exports.deleteScore = async (req,res,next)=>{
-    try{
-        await scoreModel.deleteScore(req.params.userId,req.params.courseId)
-        res.status(204).end()
-    }catch(err){
-        err.status = 400
-        err.message = "删除失败"
-        next(err)
-    }
-}
+// // 删除学员成绩
+// exports.deleteScore = async (req,res,next)=>{
+//     try{
+//         await scoreModel.deleteScore(req.params.userId,req.params.courseId)
+//         res.status(204).end()
+//     }catch(err){
+//         err.status = 400
+//         err.message = "删除失败"
+//         next(err)
+//     }
+// }

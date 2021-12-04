@@ -81,15 +81,15 @@ exports.updateScore = async (score)=>{
     }
 }
 
-exports.deleteScore = async (userId,courseId)=>{
-    try{
-        let connection = await getConnection()
-        let query = promisify(connection.query).bind(connection)
-        let sql = "select * from students"
-        let result = await query(sql)
-        connection.release()
-        return
-    }catch(err){
-        throw err
-    }
-}
+// exports.deleteScore = async (userId,courseId)=>{
+//     try{
+//         let connection = await getConnection()
+//         let query = promisify(connection.query).bind(connection)
+//         let sql = "select * from students"
+//         let result = await query(sql)
+//         connection.release()
+//         return
+//     }catch(err){
+//         throw err
+//     }
+// }

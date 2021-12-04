@@ -25,7 +25,7 @@ router.get("/search/courselimit/:courseId/:largerThen",authorization,isAdmin,sco
 // 修改学员成绩
 router.put("/update",authorization,isAdmin,scoreValidotor.update,scoreCtl.updateScore);
 
-// 删除学员成绩
-router.delete("/delete/:userId/:courseId",authorization,isAdmin,scoreValidotor.delete,scoreCtl.deleteScore);
+// // 删除学员成绩
+// router.delete("/delete/:userId/:courseId",authorization,isAdmin,scoreValidotor.delete,scoreCtl.deleteScore);
 
 module.exports=router;
