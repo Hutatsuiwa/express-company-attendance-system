@@ -145,7 +145,7 @@ exports.update = [
         })
     ]),
     validate([
-        body('examination.startTime').custom(async (startTime)=>{
+        body('examination.startTime').custom(async (startTime,{ req })=>{
             let result = await examinationModel.findExaminationByRoom(req.body.examination.roomId)
             if(startTime<Date.now()){
                 return Promise.reject("开始时间设置过早")

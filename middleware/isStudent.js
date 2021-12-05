@@ -4,7 +4,7 @@ module.exports = async (req,res,next)=>{
     try{
         const result = await studentModel.findStudentByName(req.username)
         if(!result.length){
-            let err
+            let err={}
             throw err
         }
         next();

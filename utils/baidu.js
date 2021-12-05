@@ -118,6 +118,7 @@ exports.matchFace = async (studentImage,studentUserId) => {
 exports.cheackFace = async (studentImage)=>{
     try{
         let image = studentImage;
+        console.log(image.slice(0,50))
         let imageType = "BASE64";
         let options = {};
         options["face_field"] = "quality";

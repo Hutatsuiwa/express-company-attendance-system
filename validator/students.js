@@ -7,7 +7,7 @@ exports.login = [
     validate([
         body('login.username').notEmpty().withMessage("请传入用户名"),
         body('login.password').notEmpty().withMessage("请传入密码"),
-        body('login.image').notEmpty().isBase64().withMessage("图片不是正确的Base64格式")
+        body('login.imageBase64').notEmpty().isBase64().withMessage("图片不是正确的Base64格式")
     ]),
     validate([
         body('login.username').custom(async (username,{req})=>{
@@ -34,7 +34,7 @@ exports.add = [
     validate([
         body('student.username').notEmpty().withMessage("请传入用户名"),
         body('student.password').notEmpty().withMessage("请传入密码"),
-        body('student.image').notEmpty().isBase64().withMessage("图片不是正确的Base64格式")
+        body('student.imageBase64').notEmpty().isBase64().withMessage("图片不是正确的Base64格式")
     ]),
     validate([
         body('student.username').custom(async (username)=>{

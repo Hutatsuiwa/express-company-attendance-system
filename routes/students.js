@@ -5,6 +5,9 @@ const studnetCtl = require('../controller/students')
 
 const passwordMd5 =require('../middleware/passwordMd5')
 
+//imageBase64格式修正
+const imageFormat = require('../middleware/imageFormat')
+
 //输入数据检测、验证
 const studentValidotor = require('../validator/students');
 
@@ -20,7 +23,7 @@ router.get('/search/all',authorization,isAdmin,studnetCtl.getAllStudents);
 router.get('/search/:username',authorization,isAdmin,studentValidotor.find,studnetCtl.getStudentByName);
 
 // 添加学员信息
-router.post('/add',passwordMd5,authorization,isAdmin,studnetCtl.addStudent);
+router.post('/add',imageFormat,passwordMd5,authorization,isAdmin,studnetCtl.addStudent);
 
 // 修改学员信息
 router.put('/update',passwordMd5,authorization,isAdmin,studnetCtl.updateStudent);
@@ -29,7 +32,7 @@ router.put('/update',passwordMd5,authorization,isAdmin,studnetCtl.updateStudent)
 router.delete('/delete/:userId',authorization,isAdmin,studnetCtl.deleteStudent);
 
 // 学员登录
-router.post('/login',passwordMd5,studentValidotor.login,studnetCtl.loginStudent);
+router.post('/login',imageFormat,passwordMd5,studentValidotor.login,studnetCtl.loginStudent);
 
 // 获取已登陆学员的个人信息
 router.get('/myself',authorization,isStudnet,studnetCtl.studentMyself);

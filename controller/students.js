@@ -35,10 +35,11 @@ exports.getStudentByName = async (req,res,next)=>{
 // 添加学员信息
 exports.addStudent = async (req,res,next)=>{
     try{
-        await studentModel.addStudent(req.student);
+        await studentModel.addStudent(req.body.student);
         // 插入成功后，从数据库中取出userId
-        const studentUserId = await studentModel.findStudentByName(req.body.student.username)[0].id
-        const studentImage = req.body.student.image
+        const temp = await studentModel.findStudentByName(req.body.student.username)
+        const studentUserId = temp[0].id
+        const studentImage = req.body.student.imageBase64
         // 检测人脸质量后再注册人脸
         await baiduFace.cheackFace(studentImage)
         await baiduFace.registerFace(studentImage,studentUserId)
@@ -79,7 +80,7 @@ exports.deleteStudent = async (req,res,next)=>{
 exports.loginStudent = async (req,res,next)=>{
     try{
         // 验证人脸
-        if(await baiduFace.matchFace(req.body.login.image,req.body.login.userId)<90){
+        if(await baiduFace.matchFace(req.body.login.imageBase64,req.body.login.userId)<90){
             let err = {}
             err.message = "人脸信息不匹配"
             err.status = 400
