@@ -158,6 +158,34 @@ exports.findStudentById = async(userId)=>{
     }
 }
 
+exports.findStudentCourseState = async(userId,courseId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select state_id from students_states where user_id=? and course_id=?"
+        let result = await query(sql,[userId,courseId])
+        console.log(result)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findStudentState = async(userId,examinationId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select state_id from students_states where user_id=? and examination_id=?"
+        let result = await query(sql,[userId,examinationId])
+        console.log(result)
+        connection.release()
+        return result
+    }catch(err){
+        throw err
+    }
+}
+
 exports.validPassword = async(username)=>{
     try{
         let connection = await getConnection();

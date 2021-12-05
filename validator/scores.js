@@ -116,5 +116,13 @@ exports.update = [
                 return Promise.reject("分数设置不合法")
             }
         })
-    ])
+    ]),
+    validate([
+        body('score.score').custom(async (score,{req})=>{
+            const result = await studentModel.findStudentCourseState(req.body.score.userId,req.body.score.courseId)
+            if(result[0].state_id == 1){
+                return Promise.reject("用户未通过且未预约，无法修改分数")
+            }
+        })
+    ]),
 ]

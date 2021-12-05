@@ -73,18 +73,20 @@ exports.getExaminationByCourseTime = async (req,res,next)=>{
 // 添加考试信息
 exports.addExamination = async (req,res,next)=>{
     try{
-        // 自动开始考试
+        let examinationId = await examinationModel.addExamination(req.body.examination);
+        console.log("###",req.body.examination.startTime*1 - Date.now())
+        // 自动考试最长只能设置2147483647毫秒
+        // 自动开始考试 
         const startTimeoutId = setTimeout(async () => {
-            await examinationModel.startExamination()
-        }, req.body.examination.startTime*1 - Date.now());
+            await examinationModel.startExamination(examinationId)
+        }, (req.body.examination.startTime*1 - Date.now()));
         // 自动结束考试
         const closeTimeoutId = setTimeout(async () => {
-            await examinationModel.closeExamination()
-        }, req.body.examination.startTime*1 + 2700000);
+            await examinationModel.closeExamination(examinationId)
+        }, (req.body.examination.startTime*1 - Date.now() + 2700000 + 3000));  // 增加三秒延迟
         // 将定时器放入examination中
-        req.body.examination.startTimeoutId = Number(startTimeoutId)
-        req.body.examination.closeTimeoutId = Number(closeTimeoutId)
-        await examinationModel.addExamination(req.body.examination);
+        await examinationModel.setExaminationStartTimeout(examinationId,Number(startTimeoutId))
+        await examinationModel.setExaminationCloseTimeout(examinationId,Number(closeTimeoutId))
         res.status(204).end();
     }catch(err){
         console.log(err)
@@ -123,12 +125,12 @@ exports.updateExamination = async (req,res,next)=>{
         clearTimeout(TimeoutId.closeTimeoutId)
         // 设置新开始定时器
         const startTimeoutId = setTimeout(async () => {
-            await examinationModel.startExamination()
+            await examinationModel.startExamination(req.body.examination.examinationId)
         }, req.body.examination.startTime*1 - Date.now());
         // 设置新结束定时器
         const closeTimeoutId = setTimeout(async () => {
-            await examinationModel.closeExamination()
-        }, req.body.examination.startTime*1 + 2700000);
+            await examinationModel.closeExamination(req.body.examination.examinationId)
+        }, req.body.examination.startTime*1 -Date.now() + 2700000 + 3000);  //增加三秒延迟
         // 将定时器放入examination中
         req.body.examination.startTimeoutId = Number(startTimeoutId)
         req.body.examination.closeTimeoutId = Number(closeTimeoutId)
@@ -153,5 +155,6 @@ exports.reservationExamination = async (req,res,next)=>{
         next(err);
     }
 }
+
 
 

@@ -58,10 +58,10 @@ exports.getRoomStateByRoomId = async (roomId)=>{
         // let roomId=13
         let sql = `SELECT reservation_num,examining_num,total_num FROM rooms WHERE id=?`
         let temp = await query(sql,roomId)
-        let room = {}
-        room.reservationNum=temp[0].reservation_num
-        room.examiningNum=temp[0].examining_num
-        room.maxNum=temp[0].total_num
+        let roomState = {}
+        roomState.reservationNum=temp[0].reservation_num
+        roomState.examiningNum=temp[0].examining_num
+        roomState.maxNum=temp[0].total_num
 
         connection.release()
         return roomState

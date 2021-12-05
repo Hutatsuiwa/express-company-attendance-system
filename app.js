@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 // const multer = require('multer');
 const errorHandler = require('./middleware/errorHandler')
+const autoStartAndCloseExam = require('./utils/startAndCloseExam')
 
 const adminsRouter = require('./routes/admins');
 const examinationsRouter = require('./routes/examinations');
@@ -15,6 +16,9 @@ const scoresRouter = require('./routes/scores');
 const studentsRouter = require('./routes/students');
 
 const app = express();
+
+// 自动设置考试定时器
+autoStartAndCloseExam()
 
 //配置中间件
 app.use(logger('dev'));

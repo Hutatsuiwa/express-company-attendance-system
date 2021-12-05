@@ -342,7 +342,10 @@ exports.getPaperByUserCourse = async (userId,courseId)=>{
         //获取考生作答情况
         let params2=[userId,exam_id[0].examination_id]
         let temp2 = await query(sql_getAnswer,params2)
-        let answer=JSON.parse(temp2[0].answer_str)
+        let answer = {}
+        if(temp2.length){
+            answer=JSON.parse(temp2[0].answer_str)
+        }
 
         //整合试题与作答情况
         if(answer.answer==null){//无作答情况

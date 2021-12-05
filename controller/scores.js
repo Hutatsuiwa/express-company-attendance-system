@@ -8,6 +8,7 @@ exports.getScoreByCourse = async (req,res,next)=>{
             scores:result
         })
     }catch(err){
+        console.log(err)
         err.status = 400
         err.message = "获取失败"
         next(err)

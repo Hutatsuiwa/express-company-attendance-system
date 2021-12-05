@@ -307,5 +307,15 @@ exports.submit = [
                 return Promise.reject("该场考试不存在")
             }
         })
+    ]),
+    validate([
+        body("submit.userId").custom(async (userId,{req})=>{
+            let result = await studentModel.findStudentState(userId,req.body.submit.examinationId)
+            if(!result.length){
+                return Promise.reject("你未预约该场考试，无法提交答案")
+            }else if(result[0].state_id != 3){
+                return Promise.reject("考试尚未开始，无法提交答案")
+            }
+        })
     ])
 ]

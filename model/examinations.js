@@ -192,10 +192,8 @@ exports.addExamination = async (examination)=>{
         // }
         let params=[examination.roomId,
             examination.courseId,
-            examination.startTime,
-            examination.startTimeoutId,
-            examination.closeTimeoutId]
-        let sql = `INSERT INTO examinations VALUES(DEFAULT,?,?,?,NULL,DEFAULT,DEFAULT,?,?)`
+            examination.startTime]
+        let sql = `INSERT INTO examinations VALUES(DEFAULT,?,?,?,NULL,DEFAULT,DEFAULT,NULL,NULL)`
         let examId = await query(sql,params);//创建考试
 
 
@@ -274,7 +272,7 @@ exports.addExamination = async (examination)=>{
         await query(sql_insert_paper,params2)
 
         connection.release()
-        return
+        return examId.insertId
     }catch(err){
         throw err
     }
@@ -477,6 +475,35 @@ exports.findExaminationByRoom = async(roomId)=>{
         let result = await query(sql,roomId)
         connection.release()
         return result
+    }catch(err){
+        throw err
+    }
+}
+
+// 修改考试定时器
+exports.setExaminationStartTimeout = async(examinationId,startTimeoutId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = `UPDATE examinations SET
+        start_timeout_id=? WHERE id=?`
+        await query(sql,[startTimeoutId,examinationId])
+        connection.release()
+        return
+    }catch(err){
+        throw err
+    }
+}
+
+exports.setExaminationCloseTimeout = async(examinationId,closeTimeoutId)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = `UPDATE examinations SET
+        close_timeout_id=? WHERE id=?`
+        await query(sql,[closeTimeoutId,examinationId])
+        connection.release()
+        return
     }catch(err){
         throw err
     }

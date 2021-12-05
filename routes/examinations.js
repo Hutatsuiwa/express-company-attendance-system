@@ -37,7 +37,7 @@ router.put("/update",authorization,isAdmin,examValidotor.update,examCtrl.updateE
 router.delete("/delete/:examinationId",authorization,isAdmin,examValidotor.delete,examCtrl.deleteExamination);
 
 // 预约考试
-router.put("/reservation",authorization,isStudnet,examValidotor.reservation,examCtrl.reservationExamination);
+router.put("/reservation",authorization,examValidotor.reservation,examCtrl.reservationExamination);
 
 
 module.exports = router;
