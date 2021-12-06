@@ -314,11 +314,9 @@ exports.updateExamination = async (examination)=>{
         let params=[examination.roomId,
             examination.courseId, 
             examination.startTime,
-            examination.startTimeoutId,
-            examination.closeTimeoutId,
             examination.examinationId]
         let sql=`UPDATE examinations SET
-         room_id=?,course_id=?,start_time=?,start_timeout_id=?,close_timeout_id=? WHERE id=?`
+         room_id=?,course_id=?,start_time=? WHERE id=?`
         await query(sql,params);
 
         connection.release()
@@ -430,11 +428,15 @@ exports.findTimeoutId = async (examinationId)=>{
         let sql1=`SELECT start_timeout_id,close_timeout_id from examinations WHERE id=?`
         //找到考试对应 考场id 以及 科目id
         let temp = await query(sql1,examinationId)
-        result.startTimeoutId=temp[0].start_timeout_id
-        result.closeTimeoutId=temp[0].close_timeout_id
-
-        connection.release()
-        return result
+        if(temp.length){
+            result.startTimeoutId=temp[0].start_timeout_id
+            result.closeTimeoutId=temp[0].close_timeout_id
+            connection.release()
+            return result
+        }else{
+            connection.release()
+            return null
+        }
     }catch(err){
         throw err
     }
