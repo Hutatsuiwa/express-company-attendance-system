@@ -23,7 +23,7 @@ router.get('/search/all',authorization,isAdmin,studnetCtl.getAllStudents);
 router.get('/search/:username',authorization,isAdmin,studentValidotor.find,studnetCtl.getStudentByName);
 
 // 添加学员信息
-router.post('/add',imageFormat,passwordMd5,authorization,isAdmin,studnetCtl.addStudent);
+router.post('/add',imageFormat,passwordMd5,studnetCtl.addStudent);
 
 // 修改学员信息
 router.put('/update',passwordMd5,authorization,isAdmin,studnetCtl.updateStudent);
