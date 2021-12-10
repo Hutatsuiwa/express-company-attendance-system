@@ -54,7 +54,7 @@ router.delete("/delete/multiple/:questionId",authorization,isAdmin,questionValid
 router.get("/search/paper/:userId/:courseId",authorization,questionValidotor.findUserCourse,quesCtl.getPaperByUserCourse);
 
 // 获取试卷
-router.get("/paper/:examinationId",authorization,isAdmin,questionValidotor.findExamination,quesCtl.getPaper);
+router.get("/paper/:examinationId",authorization,questionValidotor.findExamination,quesCtl.getPaper);
 
 // 提交答案
 router.post("/submit",authorization,isStudnet,questionValidotor.submit,quesCtl.submitAnswer);
