@@ -78,10 +78,12 @@ exports.addExamination = async (req,res,next)=>{
         // 自动开始考试 
         if(req.body.examination.startTime*1 - Date.now() < 2000000000){
             const startTimeoutId = setTimeout(async () => {
+                console.log(`考试${examinationId}已开始`)
                 await examinationModel.startExamination(examinationId)
             }, (req.body.examination.startTime*1 - Date.now()));
             // 自动结束考试
             const closeTimeoutId = setTimeout(async () => {
+                console.log(`考试${examinationId}已结束`)
                 await examinationModel.closeExamination(examinationId)
             }, (req.body.examination.startTime*1 - Date.now() + 2700000 + 3000));  // 增加三秒延迟
             // 将定时器放入examination中
@@ -134,10 +136,12 @@ exports.updateExamination = async (req,res,next)=>{
         if(req.body.examination.startTime*1 - Date.now() < 2000000000){
                 // 设置新开始定时器
             const startTimeoutId = setTimeout(async () => {
+                console.log(`考试${req.body.examination.examinationId}已开始`)
                 await examinationModel.startExamination(req.body.examination.examinationId)
             }, req.body.examination.startTime*1 - Date.now());
             // 设置新结束定时器
             const closeTimeoutId = setTimeout(async () => {
+                console.log(`考试${req.body.examination.examinationId}已结束`)
                 await examinationModel.closeExamination(req.body.examination.examinationId)
             }, req.body.examination.startTime*1 -Date.now() + 2700000 + 3000);  //增加三秒延迟
             // 将定时器放入examination中
