@@ -89,7 +89,7 @@ exports.add = [
             }
             console.log(result)
             for(let item of result){
-                if(startTime*1<item.start_time*1+2700000){
+                if(startTime*1>item.start_time*1&&startTime*1<item.start_time*1+2700000){
                     return Promise.reject("该考场在此时间正在考试，无法设置新考试")
                 }
             }
@@ -151,7 +151,7 @@ exports.update = [
                 return Promise.reject("开始时间设置过早")
             }
             result.forEach((item)=>{
-                if(startTime*1<item.startTime*1+2700000){
+                if(startTime*1>item.start_time*1&&startTime*1<item.startTime*1+2700000){
                     return Promise.reject("该考场在此时间正在考试，无法设置新考试")
                 }
             })
