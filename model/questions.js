@@ -420,14 +420,14 @@ exports.submitAnswer = async (submit)=>{
         let sql = "insert into stu_answers VALUES(?,?,?)"
         let temp={}
         //插入考生回答
-        temp.answer=submit.submit.answer
+        temp.answer=submit.answer
         let str_answers = JSON.stringify(temp)
-        let params=[submit.submit.userId,submit.submit.examinationId,str_answers]
+        let params=[submit.userId,submit.examinationId,str_answers]
         await query(sql,params)
 
         let sql_getPaper=`SELECT paper_str from papers WHERE paper_id=?`
         //获取试卷
-        let paper_temp = await query(sql_getPaper,submit.submit.examinationId)
+        let paper_temp = await query(sql_getPaper,submit.examinationId)
         let paper = JSON.parse(paper_temp[0].paper_str)
         let score=0
         //单选
@@ -439,7 +439,7 @@ exports.submitAnswer = async (submit)=>{
                     break
                 }
             }
-            if(correct==submit.submit.answer.choice[i].optionChoice){
+            if(correct==submit.answer.choice[i].optionChoice){
                 score=score+2
             }
         }
@@ -452,7 +452,7 @@ exports.submitAnswer = async (submit)=>{
                     break
                 }
             }
-            if(correct==submit.submit.answer.judge[i].optionChoice){
+            if(correct==submit.answer.judge[i].optionChoice){
                 score=score+2
             }
         }
@@ -464,15 +464,15 @@ exports.submitAnswer = async (submit)=>{
                     correct=correct+paper.questions.multiples[i].options[j].key
                 }
             }
-            if(correct==submit.submit.answer.multiple[i].optionChoice){
+            if(correct==submit.answer.multiple[i].optionChoice){
                 score=score+2
             }
         }
 
         //更新考生成绩
         let sql_update_score=`UPDATE scores set score=? WHERE user_id=? and course_id=?`
-        let course_id = await query(`SELECT course_id FROM examinations WHERE id=?`,submit.submit.examinationId)
-        let params_update_score=[score,submit.submit.userId,course_id[0].course_id]
+        let course_id = await query(`SELECT course_id FROM examinations WHERE id=?`,submit.examinationId)
+        let params_update_score=[score,submit.userId,course_id[0].course_id]
         await query(sql_update_score,params_update_score)
         //更新考生状态  通过与否
         let sql_update_studentState=`UPDATE states_detail set state_id=? WHERE user_id=? and course_id=?`
@@ -480,7 +480,7 @@ exports.submitAnswer = async (submit)=>{
         if(score<90){
             state_id=1
         }
-        let params_update_studentState=[state_id,submit.submit.userId,course_id[0].course_id]
+        let params_update_studentState=[state_id,submit.userId,course_id[0].course_id]
         await query(sql_update_studentState,params_update_studentState)
         
         connection.release()
