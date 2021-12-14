@@ -71,9 +71,9 @@ exports.getScoreByUserCourse = async (userId,courseId)=>{
         else{
             score.scoreState="已通过"
         }
-        let sql_getExamId=`SELECT * from students_states WHERE user_id=13 and course_id=4`
+        let sql_getExamId=`SELECT * from students_states WHERE user_id=? and course_id=?`
         //获取对应的考试Id
-        let examId = await query(sql_getExamId)
+        let examId = await query(sql_getExamId,[userId,courseId])
         let sql_getOther=`SELECT e.room_id,r.room_name,e.start_time from
             examinations e INNER JOIN examination_rooms r on e.room_id=r.id WHERE e.id=?`
         //获取考场id及其名称  开考时间
@@ -115,9 +115,9 @@ exports.getScoreByCourseLarge = async (courseId,largerThen)=>{
             else{
                 score.scoreState="已通过"
             }
-            let sql_getExamId=`SELECT * from students_states WHERE user_id=13 and course_id=4`
+            let sql_getExamId=`SELECT * from students_states WHERE user_id=? and course_id=?`
             //获取对应的考试Id
-            let examId = await query(sql_getExamId)
+            let examId = await query(sql_getExamId,[score.userId,courseId])
             let sql_getOther=`SELECT e.room_id,r.room_name,e.start_time from
              examinations e INNER JOIN examination_rooms r on e.room_id=r.id WHERE e.id=?`
             //获取考场id及其名称  开考时间
