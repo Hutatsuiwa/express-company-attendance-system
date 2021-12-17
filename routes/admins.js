@@ -19,7 +19,7 @@ router.get("/search/all",authorization,isAdmin,adminCtl.getAllAdmins)
 router.get("/search/:username",authorization,isAdmin,adminValidotor.find,adminCtl.getAdminByName);
 
 // 修改管理员信息
-router.put("/updata",passwordMd5,authorization,isAdmin,adminValidotor.update,adminCtl.updateAdmin);
+router.put("/update",passwordMd5,authorization,isAdmin,adminValidotor.update,adminCtl.updateAdmin);
 
 // 通过用户ID删除管理员信息
 router.delete("/delete/:userId",authorization,isAdmin,adminValidotor.delete,adminCtl.deleteAdmin);
