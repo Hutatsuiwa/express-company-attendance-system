@@ -59,9 +59,12 @@ exports.addStudent = async (student)=>{
         let query = promisify(connection.query).bind(connection)
 
         // let student={username:"李四",password:"123"}
-        let parms=[student.username,student.password]
-        let sql = `INSERT INTO students VALUES(DEFAULT,?,?,DEFAULT,DEFAULT)`
+        let parms=[student.username,student.password,student.identityNumber]
+        let sql = `INSERT INTO students VALUES(DEFAULT,?,?,DEFAULT,DEFAULT,?)`
         await query(sql,parms)
+
+        let sql2 = `DELETE FROM audits where user_name=?`
+        await query(sql2,student.username)
 
         connection.release()
         return
@@ -194,6 +197,20 @@ exports.validPassword = async(username)=>{
         let result = await query(sql,username)
         connection.release()
         return result.length ? result[0].password : null
+    }catch(err){
+        throw err
+    }
+}
+
+exports.findStudentByIdentity = async(identityNumber)=>{
+    try{
+        let connection = await getConnection();
+        let query = promisify(connection.query).bind(connection)
+        let sql = "select id,username from students where identity_num=?"
+        let result = await query(sql,identityNumber)
+        console.log(result)
+        connection.release()
+        return result
     }catch(err){
         throw err
     }

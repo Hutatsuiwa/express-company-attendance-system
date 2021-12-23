@@ -1,6 +1,7 @@
 const jwt = require("../utils/jwt")
 const { jwtSecret } = require("../config/config_default")
 const studentModel = require('../model/students')
+const auditModel = require('../model/audits')
 const baiduFace = require('../utils/baidu')
 
 // 获取所有学员信息

@@ -1,6 +1,7 @@
 module.exports = async (req, res, next)=>{
     try{
         if(req.body.student){
+            req.body.student.origiImageBase64 = req.body.student.imageBase64
             req.body.student.imageBase64 = req.body.student.imageBase64.replace(/\s/g, "+").replace(/^data:image\/\w+;base64,/, '');
         }
         if(req.body.login){

@@ -14,6 +14,7 @@ const questionsRouter = require('./routes/questions');
 const roomsRouter = require('./routes/rooms');
 const scoresRouter = require('./routes/scores');
 const studentsRouter = require('./routes/students');
+const auditsRouter = require('./routes/audits');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/students', studentsRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/scores', scoresRouter);
+app.use('/api/audits', auditsRouter);
 
 
 // catch 404 and forward to error handler

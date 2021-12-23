@@ -26,7 +26,7 @@ router.get('/search/:username',authorization,isAdmin,studentValidotor.find,studn
 router.post('/add',imageFormat,passwordMd5,studentValidotor.add,studnetCtl.addStudent);
 
 // 修改学员信息
-router.put('/update',passwordMd5,authorization,isAdmin,studentValidotor.update,sstudnetCtl.updateStudent);
+router.put('/update',passwordMd5,authorization,isAdmin,studentValidotor.update,studnetCtl.updateStudent);
 
 // 通过用户ID删除学员信息
 router.delete('/delete/:userId',authorization,isAdmin,studentValidotor.delete,studnetCtl.deleteStudent);
