@@ -32,10 +32,16 @@ exports.getScoreByCourse = async (courseId)=>{
             let sql_getOther=`SELECT e.room_id,r.room_name,e.start_time from
              examinations e INNER JOIN examination_rooms r on e.room_id=r.id WHERE e.id=?`
             //获取考场id及其名称  开考时间
-            let other = await query(sql_getOther,examId[0].examination_id)
-            score.roomId=other[0].room_id
-            score.roomName=other[0].room_name
-            score.startTime=other[0].start_time
+            if(examId[0].examination_id){
+                let other = await query(sql_getOther,examId[0].examination_id)
+                score.roomId=other[0].room_id
+                score.roomName=other[0].room_name
+                score.startTime=other[0].start_time
+            }else{
+                score.roomId=null
+                score.roomName=null
+                score.startTime=null
+            }
             result.push(score)
             score={}
         }
@@ -77,10 +83,16 @@ exports.getScoreByUserCourse = async (userId,courseId)=>{
         let sql_getOther=`SELECT e.room_id,r.room_name,e.start_time from
             examinations e INNER JOIN examination_rooms r on e.room_id=r.id WHERE e.id=?`
         //获取考场id及其名称  开考时间
-        let other = await query(sql_getOther,examId[0].examination_id)
-        score.roomId=other[0].room_id
-        score.roomName=other[0].room_name
-        score.startTime=other[0].start_time
+        if(examId[0].examination_id){
+            let other = await query(sql_getOther,examId[0].examination_id)
+            score.roomId=other[0].room_id
+            score.roomName=other[0].room_name
+            score.startTime=other[0].start_time
+        }else{
+            score.roomId=null
+            score.roomName=null
+            score.startTime=null
+        }
 
         connection.release()
         return score
@@ -121,10 +133,16 @@ exports.getScoreByCourseLarge = async (courseId,largerThen)=>{
             let sql_getOther=`SELECT e.room_id,r.room_name,e.start_time from
              examinations e INNER JOIN examination_rooms r on e.room_id=r.id WHERE e.id=?`
             //获取考场id及其名称  开考时间
-            let other = await query(sql_getOther,examId[0].examination_id)
-            score.roomId=other[0].room_id
-            score.roomName=other[0].room_name
-            score.startTime=other[0].start_time
+            if(examId[0].examination_id){
+                let other = await query(sql_getOther,examId[0].examination_id)
+                score.roomId=other[0].room_id
+                score.roomName=other[0].room_name
+                score.startTime=other[0].start_time
+            }else{
+                score.roomId=null
+                score.roomName=null
+                score.startTime=null
+            }
             result.push(score)
             score={}
         }
